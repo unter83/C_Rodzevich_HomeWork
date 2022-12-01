@@ -1,10 +1,46 @@
 ﻿void Show2DArray(int[,] array)
 {
+    int max = array[0,0];   // Определение максимального числа матрице //
+    for (int i = 0; i < array.GetLength(0); i++)
+        for (int j = 0; j < array.GetLength(1); j++)
+            if (Math.Abs(array[i,j]) > max)
+                max = Math.Abs(array[i,j]);        
+
+    int div = max, max_digit = 1; // Определение разрядности максимального числа матрице //
+        while (div > 0)
+            {
+                div = div / 10; 
+                max_digit++;     
+            } 
+
+    
     for (int i = 0; i < array.GetLength(0); i++)
     {
         for (int j = 0; j < array.GetLength(1); j++)
-            Console.Write(array[i, j] + " ");
+        {
+            int count = 0;
+            div = Math.Abs(array[i,j]);
 
+            while (div > 0)   
+            {
+                div = div / 10;
+                count++; // <------- Разрядности данного числа 
+            }
+
+            count = max_digit - count; // Определяем сколько пробелов поставить перед числом           
+            if (array[i, j] == 0)
+                count--;
+            if (array[i, j] < 0)
+                count--;
+
+            while (count > 0) // Расставляем пробелы    
+            {
+                Console.Write(" ");
+                count--;
+            }
+
+            Console.Write(array[i, j] + " ");
+        }
         Console.Write("\n");
     }
     Console.Write("\n");
@@ -85,7 +121,7 @@ else
 
 // === Задача 56 ===
 // Задайте прямоугольный двумерный массив. Напишите программу, которая будет находить строку с наименьшей суммой элементов.
-
+/*
 Console.Clear();
 
 Console.WriteLine("The program shows a number of row if 2D array with the smallest sum of its elements");
@@ -127,6 +163,75 @@ if (min <= max)
         Show2DArray(array);
         Console.WriteLine("");
         Console.Write("The row with the smallest sum of its elements is: " + (NumOfSmallSumRow(array) + 1));
+    }
+    else
+        Console.WriteLine("Amount of rows or columns is less then 0");
+}
+else
+    Console.WriteLine("Minimum possible value is bigger then maximum possible value");
+
+*/
+// === Задача 57 ===
+// Задайте две матрицы. Напишите программу, которая будет находить произведение двух матриц.
+
+
+int [,] ProdMatrix(int [,] arrayA, int [,] arrayB)
+{
+    int[,] prod_array = new int [arrayA.GetLength(0), arrayB.GetLength(1)];
+    for (int m = 0; m < prod_array.GetLength(0); m++)
+        for (int n = 0; n < prod_array.GetLength(1); n++)
+        {   
+            int sum = 0;
+            for (int i = 0, j = 0; i < arrayA.GetLength(1) && j < arrayB.GetLength(0); i++, j++)
+                {
+                    sum = sum + arrayA[m,i] * arrayB[j,n];
+                }
+            prod_array[m,n] = sum;
+        }       
+
+    return prod_array;
+}
+
+
+Console.Clear();
+
+Console.WriteLine("The program shows a product of two arrays");
+Console.WriteLine();
+
+Console.Write("Input the min possible value for both arrays:");
+int min = Convert.ToInt32(Console.ReadLine());
+Console.Write("Input the max possible value for both arrays:");
+int max = Convert.ToInt32(Console.ReadLine());
+
+if (min <= max)
+{
+    Console.Write("Input the number of rows for first array:");
+    int r1 = Convert.ToInt32(Console.ReadLine());
+    Console.Write("Input the number of colomns for first array:");
+    int c1 = Convert.ToInt32(Console.ReadLine());
+    Console.Write("Input the number of rows for second array:");
+    int r2 = Convert.ToInt32(Console.ReadLine());
+    Console.Write("Input the number of colomns for second array:");
+    int c2 = Convert.ToInt32(Console.ReadLine());
+    if (r1 > 0 && c1 > 0 && r2 > 0 && c2 > 0)
+    {
+        int[,] arrayA = CreateRandom2DArray(r1, c1, min, max);
+        int[,] arrayB = CreateRandom2DArray(r2, c2, min, max);
+        Console.WriteLine("");
+        Console.WriteLine("First matrix:");
+        Show2DArray(arrayA);
+        Console.WriteLine("");
+        Console.WriteLine("Second matrix:");
+        Show2DArray(arrayB);   
+        if (arrayA.GetLength(1) == arrayB.GetLength(0))
+        {
+            int[,] prod_array = ProdMatrix(arrayA, arrayB);
+            Console.WriteLine("");
+            Console.WriteLine("Production of first and second matrix is:");
+            Show2DArray(prod_array);
+        }
+        else
+            Console.WriteLine("Number of colomns of the firts array and rows of the second array must be equal");
     }
     else
         Console.WriteLine("Amount of rows or columns is less then 0");
