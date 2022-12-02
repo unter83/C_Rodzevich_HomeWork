@@ -1,27 +1,27 @@
 ﻿void Show2DArray(int[,] array)
 {
-    int max = array[0,0];   // Определение максимального числа матрице //
+    int max = array[0, 0];   // Определение максимального числа матрице //
     for (int i = 0; i < array.GetLength(0); i++)
         for (int j = 0; j < array.GetLength(1); j++)
-            if (Math.Abs(array[i,j]) > max)
-                max = Math.Abs(array[i,j]);        
+            if (Math.Abs(array[i, j]) > max)
+                max = Math.Abs(array[i, j]);
 
     int div = max, max_digit = 1; // Определение разрядности максимального числа матрице //
-        while (div > 0)
-            {
-                div = div / 10; 
-                max_digit++;     
-            } 
+    while (div > 0)
+    {
+        div = div / 10;
+        max_digit++;
+    }
 
-    
+
     for (int i = 0; i < array.GetLength(0); i++)
     {
         for (int j = 0; j < array.GetLength(1); j++)
         {
             int count = 0;
-            div = Math.Abs(array[i,j]);
+            div = Math.Abs(array[i, j]);
 
-            while (div > 0)   
+            while (div > 0)
             {
                 div = div / 10;
                 count++; // <------- Считает разрядность числа в масиве 
@@ -242,12 +242,12 @@ else
 
 // === Задача 60 ===
 // Сформируйте трёхмерный массив из неповторяющихся двузначных чисел. Напишите программу, которая будет построчно выводить массив, добавляя индексы каждого элемента.
+/*
 
-
-int[]CreateRandom3DArray(int v1, int v2, int v3)
+int[,,] CreateRandom3DArray(int v1, int v2, int v3)
 {
     int[,,] array = new int[v1, v2, v3];
-    int [] array_string = new int [v1*v2*v3];
+    int[] array_string = new int[v1 * v2 * v3];
     int n = 0;
     for (int i = 0; i < v1; i++)
         for (int j = 0; j < v2; j++)
@@ -260,17 +260,16 @@ int[]CreateRandom3DArray(int v1, int v2, int v3)
                 {
                     if (array[i, j, k] == array_string[count])
                     {
-                        Console.Write("bingo 2 ");
-                        array[i, j, k] = new Random().Next(10, 100); 
+                        array[i, j, k] = new Random().Next(10, 100);
                         array_string[n] = array[i, j, k];
                         count = 0;
                     }
                     else
                         count++;
                 }
-                n++;     
+                n++;
             }
-    return array_string;
+    return array;
 }
 
 void ShowArray(int[] array)
@@ -280,23 +279,109 @@ void ShowArray(int[] array)
 
 }
 
+void ShowArrayAndIndexes(int[,,] array)
+{
+    for (int i = 0; i < array.GetLength(0); i++)
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            for (int k = 0; k < array.GetLength(2); k++)            
+                Console.Write(array[i,j,k] + " (" + i + "," + j + "," + k + ") ");
+            Console.Write("\n");   
+        }
+
+}
 
 Console.Clear();
 
 Console.WriteLine("The program makes 3D array with unique 2-digit numbers and shows its elements with indexes");
 Console.WriteLine();
 
-Console.Write("Input the number of rows for first array:");
+Console.Write("Input a length of the 3D array:");
 int v1 = Convert.ToInt32(Console.ReadLine());
-Console.Write("Input the number of colomns for first array:");
+Console.Write("Input a width of the 3D array:");
 int v2 = Convert.ToInt32(Console.ReadLine());
-Console.Write("Input the number of rows for second array:");
+Console.Write("Input a depth of the 3D array:");
 int v3 = Convert.ToInt32(Console.ReadLine());
 if (v1 > 0 && v2 > 0 && v3 > 0)
 {
-    int[] array_string = CreateRandom3DArray(v1, v2, v3);
+    if (v1 * v2 * v3 < 89)
+    {
+        int[,,] array = CreateRandom3DArray(v1, v2, v3);
+        Console.WriteLine("");
+        ShowArrayAndIndexes(array);
+    }
+    else
+        Console.WriteLine("There must be less then 90 elements in the array");
+}
+else
+    Console.WriteLine("Amount of rows or columns is less then 0");
+
+*/
+// === Задача 60 ===
+// Напишите программу, которая заполнит спирально массив 4 на 4.
+
+int[,] GenerateSpiralArray(int rows, int colomns)
+{
+    int[,] array = new int[rows, colomns];
+    int count = 0;
+    int i = 0, j = 0;
+    int mr = 0;
+    while (count < rows * colomns)
+    {
+        while (j < colomns - mr)
+        {
+            array[i, j] = count;
+            j++;            
+            count++;
+        }
+        j--;     
+        i++;
+        while (i < rows - mr)
+        {
+            array[i, j] = count;
+            i++;
+            count++;           
+        } 
+        i--;
+        j--;
+        
+
+        while (j > (-1 + mr))
+        {
+            array[i, j] = count;
+            j--;
+            count++;
+        }
+        i--;
+        j++;
+        mr++;
+
+        while (i > (-1 + mr))
+        {
+            array[i, j] = count;
+            i--;
+            count++;
+        }
+        i++;
+        j++;
+    }
+    return array;
+}
+
+Console.Clear();
+
+Console.WriteLine("The program makes spiral 2D array");
+Console.WriteLine();
+
+Console.Write("Input the number of rows:");
+int r = Convert.ToInt32(Console.ReadLine());
+Console.Write("Input the number of colomns:");
+int c = Convert.ToInt32(Console.ReadLine());
+if (r > 0 && c > 0)
+{
+    int[,] array = GenerateSpiralArray(r, c);
+    Show2DArray(array);
     Console.WriteLine("");
-    ShowArray(array_string);
 }
 else
     Console.WriteLine("Amount of rows or columns is less then 0");
