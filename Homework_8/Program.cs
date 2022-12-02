@@ -24,7 +24,7 @@
             while (div > 0)   
             {
                 div = div / 10;
-                count++; // <------- Разрядности данного числа 
+                count++; // <------- Считает разрядность числа в масиве 
             }
 
             count = max_digit - count; // Определяем сколько пробелов поставить перед числом           
@@ -174,7 +174,7 @@ else
 // === Задача 57 ===
 // Задайте две матрицы. Напишите программу, которая будет находить произведение двух матриц.
 
-
+/*
 int [,] ProdMatrix(int [,] arrayA, int [,] arrayB)
 {
     int[,] prod_array = new int [arrayA.GetLength(0), arrayB.GetLength(1)];
@@ -238,3 +238,65 @@ if (min <= max)
 }
 else
     Console.WriteLine("Minimum possible value is bigger then maximum possible value");
+*/
+
+// === Задача 60 ===
+// Сформируйте трёхмерный массив из неповторяющихся двузначных чисел. Напишите программу, которая будет построчно выводить массив, добавляя индексы каждого элемента.
+
+
+int[]CreateRandom3DArray(int v1, int v2, int v3)
+{
+    int[,,] array = new int[v1, v2, v3];
+    int [] array_string = new int [v1*v2*v3];
+    int n = 0;
+    for (int i = 0; i < v1; i++)
+        for (int j = 0; j < v2; j++)
+            for (int k = 0; k < v3; k++)
+            {
+                array[i, j, k] = new Random().Next(10, 100);
+                array_string[n] = array[i, j, k];
+                int count = 0;
+                while (count < n)
+                {
+                    if (array[i, j, k] == array_string[count])
+                    {
+                        Console.Write("bingo 2 ");
+                        array[i, j, k] = new Random().Next(10, 100); 
+                        array_string[n] = array[i, j, k];
+                        count = 0;
+                    }
+                    else
+                        count++;
+                }
+                n++;     
+            }
+    return array_string;
+}
+
+void ShowArray(int[] array)
+{
+    for (int i = 0; i < array.Length; i++)
+        Console.Write(array[i] + " ");
+
+}
+
+
+Console.Clear();
+
+Console.WriteLine("The program makes 3D array with unique 2-digit numbers and shows its elements with indexes");
+Console.WriteLine();
+
+Console.Write("Input the number of rows for first array:");
+int v1 = Convert.ToInt32(Console.ReadLine());
+Console.Write("Input the number of colomns for first array:");
+int v2 = Convert.ToInt32(Console.ReadLine());
+Console.Write("Input the number of rows for second array:");
+int v3 = Convert.ToInt32(Console.ReadLine());
+if (v1 > 0 && v2 > 0 && v3 > 0)
+{
+    int[] array_string = CreateRandom3DArray(v1, v2, v3);
+    Console.WriteLine("");
+    ShowArray(array_string);
+}
+else
+    Console.WriteLine("Amount of rows or columns is less then 0");
